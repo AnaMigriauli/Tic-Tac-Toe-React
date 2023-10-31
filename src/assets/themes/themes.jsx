@@ -5,4 +5,5 @@ export const DefaultColors = {
   light_sky: "#BCDBF9",
   yellow: "#DCBF3F",
   black: "#000",
+  whiteSmoke: "#F2F2F2 ",
 };

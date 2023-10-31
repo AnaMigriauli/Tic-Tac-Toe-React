@@ -1,11 +1,12 @@
 // import { useReducer } from "react";
 import styled from "styled-components";
 import { useState } from "react";
-// const reducer = (state, action) => {};
+import GameResultModal from "./GameResultModal";
 
 const TicTacToeGame = () => {
   const [activePlayer, setActivePlayer] = useState("X");
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [finish, setfinish] = useState(false);
 
   const switchPlayer = () => {
     setActivePlayer((act) => (act === "X" ? "O" : "X"));
@@ -26,6 +27,7 @@ const TicTacToeGame = () => {
     squares[1] == squares[2]
   ) {
     console.log(1);
+    setfinish(true);
   } else if (
     squares[3] !== null &&
     squares[3] == squares[4] &&
@@ -59,34 +61,38 @@ const TicTacToeGame = () => {
   }
 
   return (
-    <MainContainer>
-      <GameContainer>
-        <Players>
-          <div>
-            <p>Player X</p>
-            <p>0</p>
-          </div>
-          <div>
-            <p>Player O</p>
-            <p>0</p>
-          </div>
-        </Players>
-        <GameBoard>
-          {squares.map((value, index) => (
-            <Square
-              key={index}
-              onClick={() => changeValueHandler(index)}
-              value={value}
-            >
-              {value}
-            </Square>
-          ))}
-        </GameBoard>
-        <RestartBtn>
-          <button>Restart Game</button>
-        </RestartBtn>
-      </GameContainer>
-    </MainContainer>
+    <>
+      <GameResultModal />
+      <MainContainer>
+        <GameContainer>
+          <Players>
+            <div>
+              <p>Player X</p>
+              <p>0</p>
+            </div>
+            <div>
+              <p>Player O</p>
+              <p>0</p>
+            </div>
+          </Players>
+          <GameBoard>
+            {squares.map((value, index) => (
+              <Square
+                key={index}
+                onClick={() => changeValueHandler(index)}
+                value={value}
+                finish={finish}
+              >
+                {value}
+              </Square>
+            ))}
+          </GameBoard>
+          <RestartBtn>
+            <button>Restart Game</button>
+          </RestartBtn>
+        </GameContainer>
+      </MainContainer>
+    </>
   );
 };
 
