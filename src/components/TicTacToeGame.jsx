@@ -1,16 +1,62 @@
 // import { useReducer } from "react";
 import styled from "styled-components";
-
+import { useState } from "react";
 // const reducer = (state, action) => {};
 
 const TicTacToeGame = () => {
-  // const gameState = [
-  //   { squares: [null, null, null, null, null, null, null, null, null] },
-  //   { activePlayers: "X" },
-  //   { Score: { X: 0, O: 0 } },
-  // ];
+  const [activePlayer, setActivePlayer] = useState("X");
+  const [squares, setSquares] = useState(Array(9).fill(null));
 
-  // console.log(state.NumberOfSquare);
+  const switchPlayer = () => {
+    setActivePlayer((act) => (act === "X" ? "O" : "X"));
+  };
+  const changeValueHandler = (index) => {
+    if (squares[index]) return;
+    const newSquares = squares.slice();
+
+    newSquares[index] = activePlayer;
+    setSquares(newSquares);
+
+    switchPlayer();
+  };
+
+  if (
+    squares[0] !== null &&
+    squares[0] == squares[1] &&
+    squares[1] == squares[2]
+  ) {
+    console.log(1);
+  } else if (
+    squares[3] !== null &&
+    squares[3] == squares[4] &&
+    squares[4] == squares[5]
+  ) {
+    console.log(2);
+  } else if (
+    squares[6] !== null &&
+    squares[6] == squares[7] &&
+    squares[7] == squares[8]
+  ) {
+    console.log(3);
+  } else if (
+    squares[0] !== null &&
+    squares[0] == squares[3] &&
+    squares[3] == squares[6]
+  ) {
+    console.log(4);
+  } else if (
+    squares[1] !== null &&
+    squares[1] == squares[4] &&
+    squares[4] == squares[7]
+  ) {
+    console.log(5);
+  } else if (
+    squares[2] !== null &&
+    squares[2] == squares[5] &&
+    squares[5] == squares[8]
+  ) {
+    console.log(6);
+  }
 
   return (
     <MainContainer>
@@ -26,8 +72,14 @@ const TicTacToeGame = () => {
           </div>
         </Players>
         <GameBoard>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((el) => (
-            <div key={el}></div>
+          {squares.map((value, index) => (
+            <Square
+              key={index}
+              onClick={() => changeValueHandler(index)}
+              value={value}
+            >
+              {value}
+            </Square>
           ))}
         </GameBoard>
         <RestartBtn>
@@ -49,13 +101,13 @@ const MainContainer = styled.div`
 const GameContainer = styled.div`
   background-color: ${({ theme }) => theme.dark_purple};
   border-radius: 10px;
-  padding: 25px 15px;
+  padding: 35px 15px;
 `;
 
 const Players = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 35px;
+  margin-bottom: 45px;
 
   div:first-child {
     width: 120px;
@@ -94,13 +146,19 @@ const GameBoard = styled.div`
   place-items: center;
   gap: 20px;
   margin-bottom: 80px;
-  div {
-    width: 70px;
-    height: 70px;
-    background-color: ${({ theme }) => theme.purple};
-    border-radius: 5px;
-    cursor: pointer;
-  }
+`;
+const Square = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 55px;
+  font-weight: 800;
+  width: 70px;
+  height: 70px;
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ value, theme }) => (value === "X" ? theme.yellow : theme.sky)};
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 const RestartBtn = styled.div`
