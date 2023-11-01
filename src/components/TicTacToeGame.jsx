@@ -1,94 +1,210 @@
-// import { useReducer } from "react";
+import { useReducer } from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect } from "react";
 import GameResultModal from "./GameResultModal";
 
+const actionType = {
+  SET_ACTIVE_PLAYER: "SET_ACTIVE_PLAYER",
+  SET_SQUARES: "SET_SQUARES",
+  SET_GAME_RESULT: "SET_GAME_RESULT",
+  SET_PLAYERS_SCORE: "SET_PLAYERS_SCORE",
+  SET_WINNER: "SET_WINNER",
+  SET_NEXT_ROUND: " SET_NEXT_ROUND",
+  SET_NEW_GAME: "SET_NEW_GAME",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case actionType.SET_ACTIVE_PLAYER:
+      return {
+        ...state,
+        activePlayer: action.payload,
+      };
+    case actionType.SET_SQUARES:
+      return {
+        ...state,
+        squares: action.payload,
+      };
+    case actionType.SET_GAME_RESULT:
+      return {
+        ...state,
+        gameResult: action.payload,
+      };
+    case actionType.SET_WINNER:
+      return {
+        ...state,
+        winner: action.payload,
+      };
+    case actionType.SET_PLAYERS_SCORE:
+      return {
+        ...state,
+        playersScore: action.payload,
+      };
+    case actionType.SET_NEXT_ROUND:
+      return {
+        activePlayer: "X",
+        squares: Array(9).fill(null),
+        gameResult: false,
+        playersScore: state.playersScore,
+        winner: null,
+      };
+    case actionType.SET_NEW_GAME:
+      return {
+        activePlayer: "X",
+        squares: Array(9).fill(null),
+        gameResult: false,
+        playersScore: { X: 0, O: 0 },
+        winner: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const TicTacToeGame = () => {
-  const [activePlayer, setActivePlayer] = useState("X");
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [finish, setfinish] = useState(false);
+  const [state, dispatch] = useReducer(reducer, {
+    activePlayer: "X",
+    squares: Array(9).fill(null),
+    gameResult: false,
+    playersScore: { X: 0, O: 0 },
+    winner: null,
+  });
 
   const switchPlayer = () => {
-    setActivePlayer((act) => (act === "X" ? "O" : "X"));
+    let active = state.activePlayer === "X" ? "O" : "X";
+
+    dispatch({ type: actionType.SET_ACTIVE_PLAYER, payload: active });
   };
+
+  const checkForWinnerHandler = () => {
+    if (
+      state.squares[0] !== null &&
+      state.squares[0] == state.squares[1] &&
+      state.squares[1] == state.squares[2]
+    ) {
+      console.log(state.squares[0]);
+      return state.squares[0];
+    } else if (
+      state.squares[3] !== null &&
+      state.squares[3] == state.squares[4] &&
+      state.squares[4] == state.squares[5]
+    ) {
+      return state.squares[3];
+    } else if (
+      state.squares[6] !== null &&
+      state.squares[6] == state.squares[7] &&
+      state.squares[7] == state.squares[8]
+    ) {
+      return state.squares[6];
+    } else if (
+      state.squares[0] !== null &&
+      state.squares[0] == state.squares[3] &&
+      state.squares[3] == state.squares[6]
+    ) {
+      return state.squares[0];
+    } else if (
+      state.squares[1] !== null &&
+      state.squares[1] == state.squares[4] &&
+      state.squares[4] == state.squares[7]
+    ) {
+      return state.squares[1];
+    } else if (
+      state.squares[2] !== null &&
+      state.squares[2] == state.squares[5] &&
+      state.squares[5] == state.squares[8]
+    ) {
+      return state.squares[2];
+    } else if (
+      state.squares[0] !== null &&
+      state.squares[0] == state.squares[4] &&
+      state.squares[4] == state.squares[8]
+    ) {
+      return state.squares[0];
+    } else if (
+      state.squares[2] !== null &&
+      state.squares[2] == state.squares[4] &&
+      state.squares[4] == state.squares[6]
+    ) {
+      return state.squares[2];
+    }
+  };
+
+  const scoreHandler = () => {
+    const { X, O } = state.playersScore;
+    const newScore = { ...state.playersScore };
+
+    if (state.winner === "X") {
+      newScore.X = X + 1;
+    } else if (state.winner === "O") {
+      newScore.O = O + 1;
+    }
+
+    dispatch({ type: actionType.SET_PLAYERS_SCORE, payload: newScore });
+  };
+
   const changeValueHandler = (index) => {
-    if (squares[index]) return;
-    const newSquares = squares.slice();
+    if (state.squares[index]) return;
+    const newSquares = state.squares.slice();
 
-    newSquares[index] = activePlayer;
-    setSquares(newSquares);
+    newSquares[index] = state.activePlayer;
 
+    dispatch({ type: actionType.SET_SQUARES, payload: newSquares });
     switchPlayer();
   };
 
-  if (
-    squares[0] !== null &&
-    squares[0] == squares[1] &&
-    squares[1] == squares[2]
-  ) {
-    console.log(1);
-    setfinish(true);
-  } else if (
-    squares[3] !== null &&
-    squares[3] == squares[4] &&
-    squares[4] == squares[5]
-  ) {
-    console.log(2);
-  } else if (
-    squares[6] !== null &&
-    squares[6] == squares[7] &&
-    squares[7] == squares[8]
-  ) {
-    console.log(3);
-  } else if (
-    squares[0] !== null &&
-    squares[0] == squares[3] &&
-    squares[3] == squares[6]
-  ) {
-    console.log(4);
-  } else if (
-    squares[1] !== null &&
-    squares[1] == squares[4] &&
-    squares[4] == squares[7]
-  ) {
-    console.log(5);
-  } else if (
-    squares[2] !== null &&
-    squares[2] == squares[5] &&
-    squares[5] == squares[8]
-  ) {
-    console.log(6);
-  }
+  useEffect(() => {
+    let winner = checkForWinnerHandler();
 
+    if (winner) {
+      dispatch({ type: actionType.SET_WINNER, payload: winner });
+      dispatch({ type: actionType.SET_GAME_RESULT, payload: true });
+      scoreHandler();
+    }
+  }, [state.activePlayer, state.winner]);
+
+  const nextRoundHandler = () => {
+    dispatch({ type: actionType.SET_NEXT_ROUND });
+  };
+
+  const gameRestartHandler = () => {
+    dispatch({ type: actionType.SET_NEW_GAME });
+  };
   return (
     <>
-      <GameResultModal />
+      {state.gameResult && (
+        <GameResultModal
+          winner={state.winner}
+          nextRoundHandler={nextRoundHandler}
+          gameRestartHandler={gameRestartHandler}
+        />
+      )}
       <MainContainer>
         <GameContainer>
           <Players>
             <div>
               <p>Player X</p>
-              <p>0</p>
+              <p>{state.playersScore.X}</p>
             </div>
             <div>
               <p>Player O</p>
-              <p>0</p>
+              <p>{state.playersScore.O}</p>
             </div>
           </Players>
           <GameBoard>
-            {squares.map((value, index) => (
+            {state.squares.map((value, index) => (
               <Square
                 key={index}
                 onClick={() => changeValueHandler(index)}
                 value={value}
-                finish={finish}
+                winner={state.gameResult}
               >
                 {value}
               </Square>
             ))}
           </GameBoard>
           <RestartBtn>
-            <button>Restart Game</button>
+            <button onClick={gameRestartHandler}>Restart Game</button>
           </RestartBtn>
         </GameContainer>
       </MainContainer>
