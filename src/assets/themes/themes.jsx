@@ -10,3 +10,8 @@ export const DefaultColors = {
   black: "#000",
   whiteSmoke: "#F2F2F2 ",
 };
+
+export const Breakpoints = {
+  medium: "768px",
+  large: "1050px",
+};

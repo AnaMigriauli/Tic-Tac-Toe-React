@@ -2,6 +2,8 @@ import { useReducer } from "react";
 import styled from "styled-components";
 import { useEffect } from "react";
 import GameResultModal from "./GameResultModal";
+import { Breakpoints } from "../assets/themes/themes";
+import img from "../assets/images/tic. tac.toe..svg";
 
 const actionType = {
   SET_ACTIVE_PLAYER: "SET_ACTIVE_PLAYER",
@@ -95,60 +97,9 @@ const TicTacToeGame = () => {
         state.squares[a] === state.squares[b] &&
         state.squares[b] === state.squares[c]
       ) {
-        // return state.squares[a];
-        console.log(state.squares[a]);
+        return state.squares[a];
       }
     }
-    // if (
-    //   state.squares[0] !== null &&
-    //   state.squares[0] == state.squares[1] &&
-    //   state.squares[1] == state.squares[2]
-    // ) {
-    //   console.log(state.squares[0]);
-    //   return state.squares[0];
-    // } else if (
-    //   state.squares[3] !== null &&
-    //   state.squares[3] == state.squares[4] &&
-    //   state.squares[4] == state.squares[5]
-    // ) {
-    //   return state.squares[3];
-    // } else if (
-    //   state.squares[6] !== null &&
-    //   state.squares[6] == state.squares[7] &&
-    //   state.squares[7] == state.squares[8]
-    // ) {
-    //   return state.squares[6];
-    // } else if (
-    //   state.squares[0] !== null &&
-    //   state.squares[0] == state.squares[3] &&
-    //   state.squares[3] == state.squares[6]
-    // ) {
-    //   return state.squares[0];
-    // } else if (
-    //   state.squares[1] !== null &&
-    //   state.squares[1] == state.squares[4] &&
-    //   state.squares[4] == state.squares[7]
-    // ) {
-    //   return state.squares[1];
-    // } else if (
-    //   state.squares[2] !== null &&
-    //   state.squares[2] == state.squares[5] &&
-    //   state.squares[5] == state.squares[8]
-    // ) {
-    //   return state.squares[2];
-    // } else if (
-    //   state.squares[0] !== null &&
-    //   state.squares[0] == state.squares[4] &&
-    //   state.squares[4] == state.squares[8]
-    // ) {
-    //   return state.squares[0];
-    // } else if (
-    //   state.squares[2] !== null &&
-    //   state.squares[2] == state.squares[4] &&
-    //   state.squares[4] == state.squares[6]
-    // ) {
-    //   return state.squares[2];
-    // }
   };
 
   const scoreHandler = () => {
@@ -201,6 +152,7 @@ const TicTacToeGame = () => {
         />
       )}
       <MainContainer>
+        {window.innerWidth >= 1050 && <img src={img} alt="img" />}
         <GameContainer>
           <Players>
             <div>
@@ -234,52 +186,70 @@ const TicTacToeGame = () => {
 };
 
 export default TicTacToeGame;
+
 const MainContainer = styled.div`
-  width: 375px;
+  width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.purple};
-  padding: 80px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: ${Breakpoints.large}) {
+    img {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 450px;
+    }
+  }
 `;
 
 const GameContainer = styled.div`
+  width: 375px;
   background-color: ${({ theme }) => theme.dark_purple};
   border-radius: 10px;
-  padding: 35px 15px;
+
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 650px;
+    border-radius: 20px;
+  }
 `;
 
 const Players = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 45px;
+  margin: 35px 25px 45px 25px;
 
-  div:first-child {
+  @media (min-width: ${Breakpoints.medium}) {
+    margin: 45px 60px;
+  }
+
+  div {
     width: 120px;
-    height: 70px;
-    background-color: ${({ theme }) => theme.sky};
+    height: 60px;
     padding: 10px;
     text-align: center;
     border-radius: 5px;
     color: ${({ theme }) => theme.dark_purple};
     font-weight: 600;
     font-size: 18px;
+    @media (min-width: ${Breakpoints.medium}) {
+      width: 160px;
+      height: 70px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
 
     p {
       margin-bottom: 10px;
     }
   }
+
+  div:first-child {
+    background-color: ${({ theme }) => theme.sky};
+  }
   div:last-child {
-    width: 120px;
-    height: 70px;
     background-color: ${({ theme }) => theme.yellow};
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    color: ${({ theme }) => theme.dark_purple};
-    font-weight: 600;
-    font-size: 18px;
-    p {
-      margin-bottom: 10px;
-    }
   }
 `;
 
@@ -288,7 +258,11 @@ const GameBoard = styled.div`
   grid-template-columns: repeat(3, 1fr);
   place-items: center;
   gap: 20px;
-  margin-bottom: 80px;
+  margin: 0 25px 40px 25px;
+  font-family: "Inter", sans-serif;
+  @media (min-width: ${Breakpoints.medium}) {
+    margin: 0 60px 60px 60px;
+  }
 `;
 const Square = styled.div`
   display: flex;
@@ -302,9 +276,16 @@ const Square = styled.div`
   color: ${({ value, theme }) => (value === "X" ? theme.yellow : theme.sky)};
   border-radius: 5px;
   cursor: pointer;
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 100px;
+    height: 100px;
+    font-size: 70px;
+    border-radius: 15px;
+  }
 `;
 
 const RestartBtn = styled.div`
+  margin: 0 25px 40px 25px;
   button {
     width: 100%;
     height: 48px;
@@ -315,8 +296,17 @@ const RestartBtn = styled.div`
     border: none;
     cursor: pointer;
     font-size: 18px;
+    font-family: "Inter", sans-serif;
     &:hover {
       background-color: ${({ theme }) => theme.light_sky_hover};
+    }
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    margin: 0 60px 35px 60px;
+    button {
+      height: 62px;
+      font-size: 24px;
+      border-radius: 20px;
     }
   }
 `;

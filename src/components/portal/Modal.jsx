@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { Breakpoints } from "../../assets/themes/themes";
 const Modal = (props) => {
   return createPortal(
     <div>
@@ -21,6 +22,12 @@ const Div = styled.div`
   background-color: ${({ theme }) => theme.whiteSmoke};
   border-radius: 10px;
   z-index: 5;
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 450px;
+    height: 350px;
+    border-radius: 20px;
+    padding: 35px;
+  }
 `;
 
 const Overlay = styled.div`

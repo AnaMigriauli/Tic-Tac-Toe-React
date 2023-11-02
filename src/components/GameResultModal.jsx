@@ -1,6 +1,7 @@
 import Modal from "./portal/Modal";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Breakpoints } from "../assets/themes/themes";
 
 const GameResultModal = ({ winner, nextRoundHandler, gameRestartHandler }) => {
   return (
@@ -26,9 +27,16 @@ GameResultModal.propTypes = {
 
 const ModalContainer = styled.div`
   text-align: center;
+  font-family: "Inter", sans-serif;
   p {
     font-size: 25px;
     margin-bottom: 17px;
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    p {
+      font-size: 40px;
+      margin-bottom: 25px;
+    }
   }
 `;
 
@@ -36,6 +44,7 @@ const Btn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 13px;
+  font-family: "Inter", sans-serif;
   button {
     width: 100%;
     height: 38px;
@@ -56,6 +65,14 @@ const Btn = styled.div`
     background-color: ${({ theme }) => theme.sky};
     &:hover {
       background-color: ${({ theme }) => theme.sky_hover};
+    }
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    gap: 25px;
+    button {
+      height: 48px;
+      border-radius: 20px;
+      font-size: 20px;
     }
   }
 `;
