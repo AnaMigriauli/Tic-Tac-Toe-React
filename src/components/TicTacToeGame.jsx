@@ -78,56 +78,77 @@ const TicTacToeGame = () => {
   };
 
   const checkForWinnerHandler = () => {
-    if (
-      state.squares[0] !== null &&
-      state.squares[0] == state.squares[1] &&
-      state.squares[1] == state.squares[2]
-    ) {
-      console.log(state.squares[0]);
-      return state.squares[0];
-    } else if (
-      state.squares[3] !== null &&
-      state.squares[3] == state.squares[4] &&
-      state.squares[4] == state.squares[5]
-    ) {
-      return state.squares[3];
-    } else if (
-      state.squares[6] !== null &&
-      state.squares[6] == state.squares[7] &&
-      state.squares[7] == state.squares[8]
-    ) {
-      return state.squares[6];
-    } else if (
-      state.squares[0] !== null &&
-      state.squares[0] == state.squares[3] &&
-      state.squares[3] == state.squares[6]
-    ) {
-      return state.squares[0];
-    } else if (
-      state.squares[1] !== null &&
-      state.squares[1] == state.squares[4] &&
-      state.squares[4] == state.squares[7]
-    ) {
-      return state.squares[1];
-    } else if (
-      state.squares[2] !== null &&
-      state.squares[2] == state.squares[5] &&
-      state.squares[5] == state.squares[8]
-    ) {
-      return state.squares[2];
-    } else if (
-      state.squares[0] !== null &&
-      state.squares[0] == state.squares[4] &&
-      state.squares[4] == state.squares[8]
-    ) {
-      return state.squares[0];
-    } else if (
-      state.squares[2] !== null &&
-      state.squares[2] == state.squares[4] &&
-      state.squares[4] == state.squares[6]
-    ) {
-      return state.squares[2];
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let combination of winningCombinations) {
+      let [a, b, c] = combination;
+      if (
+        state.squares[a] &&
+        state.squares[a] === state.squares[b] &&
+        state.squares[b] === state.squares[c]
+      ) {
+        // return state.squares[a];
+        console.log(state.squares[a]);
+      }
     }
+    // if (
+    //   state.squares[0] !== null &&
+    //   state.squares[0] == state.squares[1] &&
+    //   state.squares[1] == state.squares[2]
+    // ) {
+    //   console.log(state.squares[0]);
+    //   return state.squares[0];
+    // } else if (
+    //   state.squares[3] !== null &&
+    //   state.squares[3] == state.squares[4] &&
+    //   state.squares[4] == state.squares[5]
+    // ) {
+    //   return state.squares[3];
+    // } else if (
+    //   state.squares[6] !== null &&
+    //   state.squares[6] == state.squares[7] &&
+    //   state.squares[7] == state.squares[8]
+    // ) {
+    //   return state.squares[6];
+    // } else if (
+    //   state.squares[0] !== null &&
+    //   state.squares[0] == state.squares[3] &&
+    //   state.squares[3] == state.squares[6]
+    // ) {
+    //   return state.squares[0];
+    // } else if (
+    //   state.squares[1] !== null &&
+    //   state.squares[1] == state.squares[4] &&
+    //   state.squares[4] == state.squares[7]
+    // ) {
+    //   return state.squares[1];
+    // } else if (
+    //   state.squares[2] !== null &&
+    //   state.squares[2] == state.squares[5] &&
+    //   state.squares[5] == state.squares[8]
+    // ) {
+    //   return state.squares[2];
+    // } else if (
+    //   state.squares[0] !== null &&
+    //   state.squares[0] == state.squares[4] &&
+    //   state.squares[4] == state.squares[8]
+    // ) {
+    //   return state.squares[0];
+    // } else if (
+    //   state.squares[2] !== null &&
+    //   state.squares[2] == state.squares[4] &&
+    //   state.squares[4] == state.squares[6]
+    // ) {
+    //   return state.squares[2];
+    // }
   };
 
   const scoreHandler = () => {
@@ -294,5 +315,8 @@ const RestartBtn = styled.div`
     border: none;
     cursor: pointer;
     font-size: 18px;
+    &:hover {
+      background-color: ${({ theme }) => theme.light_sky_hover};
+    }
   }
 `;

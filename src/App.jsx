@@ -8,7 +8,7 @@ function App() {
   return (
     <ThemeProvider theme={DefaultColors}>
       <GlobalStyles />
-      <TicTacToeGame />;
+      <TicTacToeGame />
     </ThemeProvider>
   );
 }
